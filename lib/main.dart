@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pokedex_flutter/client_provider.dart';
 import 'querydefinitions.dart';
+import 'models/pokemon.dart';
 
 void main() => runApp(MyApp());
 
@@ -49,13 +50,13 @@ class PokeList extends StatelessWidget {
                 );
               }
 
-              List pokemons = result.data['pokemons']; 
+              List<Pokemon> pokemons = (result.data['pokemons'] as List).map((Object p) => Pokemon.fromJson(p)).toList(); 
 
               return ListView.builder(
                 itemCount: pokemons.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(pokemons[index]['name']),
+                    title: Text(pokemons.elementAt(index).name),
                   );
                 },
               );
