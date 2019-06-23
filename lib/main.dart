@@ -37,9 +37,9 @@ class PokeList extends StatelessWidget {
             title: Text(title),
           ),
           body: Query(
-            options: QueryOptions(
-                document: pokemonList, variables: {'count': 20}),
-            builder: (QueryResult result, { VoidCallback refetch }) {
+            options:
+                QueryOptions(document: pokemonList, variables: {'count': 20}),
+            builder: (QueryResult result, {VoidCallback refetch}) {
               if (result.errors != null) {
                 return Text(result.errors.toString());
               }
@@ -50,7 +50,9 @@ class PokeList extends StatelessWidget {
                 );
               }
 
-              List<Pokemon> pokemons = (result.data['pokemons'] as List).map((Object p) => Pokemon.fromJson(p)).toList(); 
+              List<Pokemon> pokemons = (result.data['pokemons'] as List)
+                  .map((p) => Pokemon.fromJson(p))
+                  .toList();
 
               return ListView.builder(
                 itemCount: pokemons.length,
