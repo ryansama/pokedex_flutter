@@ -3,7 +3,7 @@ import 'package:pokedex_flutter/data/graphql_gateway.dart';
 import 'models/pokemon.dart';
 
 void main() => runApp(MyApp());
- 
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,34 +16,36 @@ class MyApp extends StatelessWidget {
     );
   }
 }
- 
+
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
- 
-class _MyHomePageState extends State<MyHomePage> { 
+
+class _MyHomePageState extends State<MyHomePage> {
   ScrollController _scrollController = new ScrollController();
- 
+
   bool isLoading = false;
   bool reachedEnd = false;
   int nextRangeIndex = GraphQLGateway.QUERY_COUNT;
   List<Pokemon> pokemon = new List<Pokemon>();
- 
+
   final gateway = new GraphQLGateway();
   void _getMoreData() async {
-    if (reachedEnd){
+    if (reachedEnd) {
       return;
     }
-    
+
     if (!isLoading) {
       setState(() {
         isLoading = true;
       });
- 
-      final response = await gateway.getPokemonsRange(nextRangeIndex == GraphQLGateway.QUERY_COUNT ? 0 : nextRangeIndex, nextRangeIndex + GraphQLGateway.QUERY_COUNT);
+
+      final response = await gateway.getPokemonsRange(
+          nextRangeIndex == GraphQLGateway.QUERY_COUNT ? 0 : nextRangeIndex,
+          nextRangeIndex + GraphQLGateway.QUERY_COUNT);
       nextRangeIndex = nextRangeIndex + GraphQLGateway.QUERY_COUNT;
-      if (response.length == 0){
+      if (response.length == 0) {
         reachedEnd = true;
       }
       setState(() {
@@ -52,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     }
   }
- 
+
   @override
   void initState() {
     this._getMoreData();
@@ -64,13 +66,13 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
   }
- 
+
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
   }
- 
+
   Widget _buildProgressIndicator() {
     return new Padding(
       padding: const EdgeInsets.all(8.0),
@@ -82,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
- 
+
   Widget _buildList() {
     return ListView.builder(
       //+1 for progressbar
@@ -102,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
       controller: _scrollController,
     );
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
