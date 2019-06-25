@@ -4,7 +4,7 @@ import 'package:pokedex_flutter/models/pokemon.dart';
 import 'package:pokedex_flutter/data/querydefinitions.dart';
 
 class GraphQLGateway {
-  static const pokemonGraphUri = "http://192.168.0.25:5000/";
+  static const pokemonGraphUri = "https://graphql-pokemon.herokuapp.com/";
   static const QUERY_COUNT = 15;
 
   GraphQLClient client;
