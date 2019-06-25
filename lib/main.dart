@@ -93,8 +93,12 @@ class _MyHomePageState extends State<MyHomePage> {
         if (index == pokemon.length) {
           return _buildProgressIndicator();
         } else {
+          var pokemonName = pokemon.elementAt(index).name;
           return new ListTile(
-            title: Text((pokemon.elementAt(index).name)),
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage("https://img.pokemondb.net/sprites/sun-moon/icon/${pokemonName.toLowerCase()}.png"),
+              ),
+            title: Text(pokemonName),
             onTap: () {
               print(pokemon[index]);
             },
