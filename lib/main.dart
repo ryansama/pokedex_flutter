@@ -95,9 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
         } else {
           var pokemonName = pokemon.elementAt(index).name;
           return new ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage("https://img.pokemondb.net/sprites/sun-moon/icon/${pokemonName.toLowerCase()}.png"),
-              ),
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(
+                  "https://img.pokemondb.net/sprites/sun-moon/icon/${getUrlFriendlyName(pokemonName)}.png"),
+            ),
             title: Text(pokemonName),
             onTap: () {
               print(pokemon[index]);
@@ -108,6 +109,12 @@ class _MyHomePageState extends State<MyHomePage> {
       controller: _scrollController,
     );
   }
+
+  String getUrlFriendlyName(String name) => name = name
+      .replaceAll("'", "")
+      .replaceAll(".", "-")
+      .replaceAll(" ", "")
+      .toLowerCase();
 
   @override
   Widget build(BuildContext context) {
