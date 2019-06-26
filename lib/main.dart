@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex_flutter/data/graphql_gateway.dart';
+import 'package:pokedex_flutter/pokemondetail.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'models/pokemon.dart';
+import 'theme/hyperball_theme.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,11 +11,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: 'Pokédex Flutter',
+      theme: hyperBallTheme(),
       home: MyHomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -95,13 +97,18 @@ class _MyHomePageState extends State<MyHomePage> {
         } else {
           var pokemonName = pokemon.elementAt(index).name;
           return new ListTile(
+            contentPadding: EdgeInsets.only(top: 10, bottom: 10, left: 20),
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(
-                  "https://img.pokemondb.net/sprites/sun-moon/icon/${getUrlFriendlyName(pokemonName)}.png"),
+              child: FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image:
+                      "https://img.pokemondb.net/sprites/sun-moon/icon/${getUrlFriendlyName(pokemonName)}.png"),
+              backgroundColor: Colors.transparent,
             ),
             title: Text(pokemonName),
             onTap: () {
-              print(pokemon[index]);
+              print("Tapped on $pokemonName");
+              navigateToDetail(pokemon.elementAt(index).id);
             },
           );
         }
@@ -120,12 +127,19 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Pagination"),
+        title: const Text("Pokédex Flutter"),
       ),
       body: Container(
         child: _buildList(),
       ),
       resizeToAvoidBottomPadding: false,
+    );
+  }
+
+  void navigateToDetail(String id) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => PokemonDetail(id)),
     );
   }
 }
