@@ -1,3 +1,3 @@
 # Pokédex Flutter
 
-Flutter app that leverages a public [Pokemon Graph](https://github.com/lucasbento/graphql-pokemon).
+Flutter app that leverages a [Pokémon Graph](https://github.com/ryansama/graphql-pokemon).
