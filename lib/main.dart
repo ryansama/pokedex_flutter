@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex_flutter/data/graphql_gateway.dart';
 import 'package:pokedex_flutter/pokemondetail.dart';
@@ -139,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void navigateToDetail(String id) async {
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PokemonDetail(id)),
+      CupertinoPageRoute(builder: (context) => PokemonDetail(id)),
     );
   }
 }
