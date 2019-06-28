@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:graphql/client.dart';
 import 'package:graphql_flutter/graphql_flutter.dart' as graphql_flutter;
 import 'package:pokedex_flutter/models/pokemon.dart';
@@ -32,5 +34,12 @@ class GraphQLGateway {
     return (res.data['pokemonsRange'] as List)
         .map((p) => Pokemon.fromJson(p))
         .toList();
+  }
+
+  Future<Pokemon> getPokemon(id) async {
+    var res = await client.query(
+        QueryOptions(document: query_single_pokemon, variables: {'id': id}));
+
+    return Pokemon.fromJson(res.data["pokemon"]);
   }
 }

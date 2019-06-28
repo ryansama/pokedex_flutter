@@ -1,26 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pokedex_flutter/data/graphql_gateway.dart';
+import 'models/pokemon.dart';
 
 class PokemonDetail extends StatefulWidget {
-  final id;
-
+  final String id;
   PokemonDetail(this.id);
 
   @override
-  State<StatefulWidget> createState() => PokemonDetailState(id);
+  State<StatefulWidget> createState() => _PokemonDetailState(id);
 }
 
-class PokemonDetailState extends State{
-  var id;
+class _PokemonDetailState extends State<PokemonDetail> {
+  final String id;
+  Future<Pokemon> pokemon;
+  final gateway = new GraphQLGateway();
 
-  PokemonDetailState(this.id);
+  _PokemonDetailState(this.id);
+
+  @override
+  void initState() {
+    super.initState();
+    pokemon = gateway.getPokemon(id);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Padding(
-      padding: const EdgeInsets.all(50.0),
-      child: Text(id),
-    ),);
+    return FutureBuilder<Pokemon>(
+      future: pokemon,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Text(snapshot.data.id);
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+
+        // By default, show a loading spinner.
+        return CircularProgressIndicator();
+      },
+    );
   }
-  
 }
