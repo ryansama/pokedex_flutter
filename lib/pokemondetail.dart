@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pokedex_flutter/data/graphql_gateway.dart';
+import 'package:pokedex_flutter/helpers/typecolordict.dart';
 import 'package:pokedex_flutter/theme/hyperball_theme.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'models/pokemon.dart';
@@ -108,6 +110,7 @@ class _PokemonDetailState extends State<PokemonDetail> {
 
   FadeInImage _buildBannerImage(Pokemon p) {
     return FadeInImage.memoryNetwork(
+      fadeInDuration: Duration(milliseconds: 150),
       placeholder: kTransparentImage,
       image:
           'https://img.pokemondb.net/artwork/${getUrlFriendlyName(p.name)}.jpg',
@@ -123,73 +126,150 @@ class _PokemonDetailState extends State<PokemonDetail> {
   _buildDetailCards(Pokemon p) {
     return Scaffold(
       body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-            child: _buildTopRow(p),
-          )
-        ],
+        children: <Widget>[_buildBasicInfoRow(p), _buildTypesRow(p)],
       ),
     );
   }
 
-  IntrinsicHeight _buildTopRow(Pokemon p) {
-    return IntrinsicHeight(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Container(
-                  color: Colors.transparent,
-                  height: 50.0,
-                  width: 0.0,
-                ),
-                Container(
-                  height: 50.0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(children: <Widget>[
-                      Text(p.weight.maximum, style: TextStyle(fontWeight: FontWeight.bold),),
-                      Text("Max wt", style: TextStyle(color: Colors.grey),)
-                    ],),
-                  ),
-                ),
-                Container(
-                  color: Colors.black12,
-                  height: 50.0,
-                  width: 1.0,
-                ),
-                Container(
-                  height: 50.0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(children: <Widget>[
-                      Text(p.height.maximum, style: TextStyle(fontWeight: FontWeight.bold),),
-                      Text("Max ht", style: TextStyle(color: Colors.grey),)
-                    ],),
-                  ),
-                ),
-                Container(
-                  color: Colors.black12,
-                  height: 50.0,
-                  width: 1.0,
-                ),
-                Container(
-                  height: 50.0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(children: <Widget>[
-                      Text(p.maxHP.toString(), style: TextStyle(fontWeight: FontWeight.bold),),
-                      Text("Max HP", style: TextStyle(color: Colors.grey),)
-                    ],),
-                  ),
-                ),
-                Container(
-                  color: Colors.black12,
-                  height: 50.0,
-                  width: 0.0,
-                ),
-              ],
+  Row _buildTypesRow(Pokemon p) {
+    var typeChips = <Card>[];
+    var hasTwoTypes = p.types.length > 1;
+    var firstType = p.types[0];
+
+    typeChips.add(
+      Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15.0),
+              bottomLeft: Radius.circular(15.0),
+              topRight: Radius.circular(hasTwoTypes ? 0.0 : 15.0),
+              bottomRight: Radius.circular(hasTwoTypes ? 0.0 : 15.0)),
+        ),
+        child: Container(
+          width: 100,
+          height: 30,
+          child: Center(
+            child: Text(firstType,
+                style: TextStyle(color: Colors.white, shadows: <Shadow>[Shadow(blurRadius: 2.0)])),
+          ),
+        ),
+        color: typeColorMap[firstType],
+      ),
+    );
+
+    if (hasTwoTypes) {
+      var secondType = p.types[1];
+      typeChips.add(
+        Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(15.0),
+              bottomRight: Radius.circular(15.0),
             ),
-          );
+          ),
+          child: Container(
+            width: 100,
+            height: 30,
+            child: Center(
+              child: Text(secondType,
+                  style: TextStyle(color: Colors.white, shadows: <Shadow>[Shadow(blurRadius: 2.0)])),
+            ),
+          ),
+          color: typeColorMap[secondType],
+        ),
+      );
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: typeChips
+    );
+  }
+
+  Padding _buildBasicInfoRow(Pokemon p) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+      child: IntrinsicHeight(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Container(
+              color: Colors.transparent,
+              height: 50.0,
+              width: 0.0,
+            ),
+            Container(
+              height: 50.0,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      p.weight.maximum,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "Max wt",
+                      style: TextStyle(color: Colors.grey),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              color: Colors.black12,
+              height: 50.0,
+              width: 1.0,
+            ),
+            Container(
+              height: 50.0,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      p.height.maximum,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "Max ht",
+                      style: TextStyle(color: Colors.grey),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              color: Colors.black12,
+              height: 50.0,
+              width: 1.0,
+            ),
+            Container(
+              height: 50.0,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      p.maxHP.toString(),
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "Max HP",
+                      style: TextStyle(color: Colors.grey),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              color: Colors.black12,
+              height: 50.0,
+              width: 0.0,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
