@@ -15,6 +15,7 @@ class Pokemon {
   double fleeRate;
   EvolutionRequirements evolutionRequirements;
   List<Evolutions> evolutions;
+  List<Evolutions> prevEvolutions;
   int maxCP;
   int maxHP;
   Attacks attacks;
@@ -31,6 +32,7 @@ class Pokemon {
       this.fleeRate,
       this.evolutionRequirements,
       this.evolutions,
+      this.prevEvolutions,
       this.maxCP,
       this.maxHP,
       this.attacks});

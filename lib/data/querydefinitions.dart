@@ -56,6 +56,10 @@ const query_single_pokemon = r"""
         id
         name
       }    
+      prevEvolutions{
+        id
+        name
+      }
     }
   }
 """;

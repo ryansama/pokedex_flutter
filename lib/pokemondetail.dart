@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -125,13 +126,81 @@ class _PokemonDetailState extends State<PokemonDetail> {
 
   _buildDetailCards(Pokemon p) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[_buildBasicInfoRow(p), _buildTypesRow(p)],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            _buildBasicInfoRow(p),
+            _buildTypesRow(p),
+            _buildEvolutionRow(p)
+          ],
+        ),
       ),
     );
   }
 
-  Row _buildTypesRow(Pokemon p) {
+  Padding _buildEvolutionRow(Pokemon p) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    var evolutionRow = List<Widget>();
+    if (p.prevEvolutions != null) {
+      for (int i = 0; i < p.prevEvolutions.length; i++) {
+        evolutionRow.add(CircleAvatar(
+            backgroundColor: Colors.transparent,
+            child: CachedNetworkImage(
+              imageUrl:
+                  "https://img.pokemondb.net/sprites/sun-moon/icon/${getUrlFriendlyName(p.prevEvolutions[i].name)}.png",
+            )));
+
+            evolutionRow.add(Icon(Icons.arrow_forward_ios, color: Color(0xff424242)));
+      }
+    }
+
+    evolutionRow.add(CircleAvatar(
+        backgroundColor: Colors.transparent,
+        child: CachedNetworkImage(
+          imageUrl:
+              "https://img.pokemondb.net/sprites/sun-moon/icon/${getUrlFriendlyName(p.name)}.png",
+        )));
+
+    if (p.evolutions != null) {
+      for (int i = 0; i < p.evolutions.length; i++) {
+        evolutionRow.add(Icon(Icons.arrow_forward_ios, color: Color(0xff424242)));
+
+        evolutionRow.add(CircleAvatar(
+            backgroundColor: Colors.transparent,
+            child: CachedNetworkImage(
+              imageUrl:
+                  "https://img.pokemondb.net/sprites/sun-moon/icon/${getUrlFriendlyName(p.evolutions[i].name)}.png",
+            )));
+      }
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text("Evolution", style: textTheme.headline),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: evolutionRow
+                    ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Padding _buildTypesRow(Pokemon p) {
     var typeChips = <Card>[];
     var hasTwoTypes = p.types.length > 1;
     var firstType = p.types[0];
@@ -150,7 +219,9 @@ class _PokemonDetailState extends State<PokemonDetail> {
           height: 30,
           child: Center(
             child: Text(firstType,
-                style: TextStyle(color: Colors.white, shadows: <Shadow>[Shadow(blurRadius: 2.0)])),
+                style: TextStyle(
+                    color: Colors.white,
+                    shadows: <Shadow>[Shadow(blurRadius: 2.0)])),
           ),
         ),
         color: typeColorMap[firstType],
@@ -172,7 +243,9 @@ class _PokemonDetailState extends State<PokemonDetail> {
             height: 30,
             child: Center(
               child: Text(secondType,
-                  style: TextStyle(color: Colors.white, shadows: <Shadow>[Shadow(blurRadius: 2.0)])),
+                  style: TextStyle(
+                      color: Colors.white,
+                      shadows: <Shadow>[Shadow(blurRadius: 2.0)])),
             ),
           ),
           color: typeColorMap[secondType],
@@ -180,15 +253,16 @@ class _PokemonDetailState extends State<PokemonDetail> {
       );
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: typeChips
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child:
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: typeChips),
     );
   }
 
   Padding _buildBasicInfoRow(Pokemon p) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+      padding: const EdgeInsets.all(8.0),
       child: IntrinsicHeight(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

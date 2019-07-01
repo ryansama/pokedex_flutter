@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex_flutter/data/graphql_gateway.dart';
 import 'package:pokedex_flutter/pokemondetail.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'helpers/util.dart';
 import 'models/pokemon.dart';
 import 'theme/hyperball_theme.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 void main() => runApp(MyApp());
 
@@ -100,10 +101,10 @@ class _MyHomePageState extends State<MyHomePage> {
           return new ListTile(
             contentPadding: EdgeInsets.only(top: 10, bottom: 10, left: 20),
             leading: CircleAvatar(
-              child: FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
-                  image:
-                      "https://img.pokemondb.net/sprites/sun-moon/icon/${getUrlFriendlyName(pokemonName)}.png"),
+              child: CachedNetworkImage(
+                imageUrl:
+                    "https://img.pokemondb.net/sprites/sun-moon/icon/${getUrlFriendlyName(pokemonName)}.png",
+              ),
               backgroundColor: Colors.transparent,
             ),
             title: Text(pokemonName),
@@ -117,12 +118,6 @@ class _MyHomePageState extends State<MyHomePage> {
       controller: _scrollController,
     );
   }
-
-  String getUrlFriendlyName(String name) => name = name
-      .replaceAll("'", "")
-      .replaceAll(".", "-")
-      .replaceAll(" ", "")
-      .toLowerCase();
 
   @override
   Widget build(BuildContext context) {

@@ -30,6 +30,10 @@ Pokemon _$PokemonFromJson(Map<String, dynamic> json) {
           ?.map((e) =>
               e == null ? null : Evolutions.fromJson(e as Map<String, dynamic>))
           ?.toList(),
+      prevEvolutions: (json['prevEvolutions'] as List)
+          ?.map((e) =>
+              e == null ? null : Evolutions.fromJson(e as Map<String, dynamic>))
+          ?.toList(),
       maxCP: json['maxCP'] as int,
       maxHP: json['maxHP'] as int,
       attacks: json['attacks'] == null
@@ -49,6 +53,7 @@ Map<String, dynamic> _$PokemonToJson(Pokemon instance) => <String, dynamic>{
       'fleeRate': instance.fleeRate,
       'evolutionRequirements': instance.evolutionRequirements,
       'evolutions': instance.evolutions,
+      'prevEvolutions': instance.prevEvolutions,
       'maxCP': instance.maxCP,
       'maxHP': instance.maxHP,
       'attacks': instance.attacks
