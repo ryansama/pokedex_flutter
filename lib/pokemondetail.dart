@@ -132,7 +132,8 @@ class _PokemonDetailState extends State<PokemonDetail> {
           children: <Widget>[
             _buildBasicInfoRow(p),
             _buildTypesRow(p),
-            _buildEvolutionRow(p)
+            _buildEvolutionRow(p),
+            _buildStrongWeakRow(p)
           ],
         ),
       ),
@@ -151,7 +152,8 @@ class _PokemonDetailState extends State<PokemonDetail> {
                   "https://img.pokemondb.net/sprites/sun-moon/icon/${getUrlFriendlyName(p.prevEvolutions[i].name)}.png",
             )));
 
-            evolutionRow.add(Icon(Icons.arrow_forward_ios, color: Color(0xff424242)));
+        evolutionRow
+            .add(Icon(Icons.arrow_forward_ios, color: Color(0xff424242)));
       }
     }
 
@@ -164,7 +166,8 @@ class _PokemonDetailState extends State<PokemonDetail> {
 
     if (p.evolutions != null) {
       for (int i = 0; i < p.evolutions.length; i++) {
-        evolutionRow.add(Icon(Icons.arrow_forward_ios, color: Color(0xff424242)));
+        evolutionRow
+            .add(Icon(Icons.arrow_forward_ios, color: Color(0xff424242)));
 
         evolutionRow.add(CircleAvatar(
             backgroundColor: Colors.transparent,
@@ -188,9 +191,8 @@ class _PokemonDetailState extends State<PokemonDetail> {
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: evolutionRow
-                    ),
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: evolutionRow),
                 ),
               ],
             ),
@@ -346,4 +348,81 @@ class _PokemonDetailState extends State<PokemonDetail> {
       ),
     );
   }
+}
+
+_buildStrongWeakRow(Pokemon p) {
+  List<Widget> resistantTypes = new List<Widget>();
+  List<Widget> weakTypes = new List<Widget>();
+
+  resistantTypes.add(Padding(
+    padding: const EdgeInsets.only(bottom: 8.0),
+    child: Text("Resists", style: TextStyle(color: Colors.white, fontSize: 20)),
+  ));
+
+  weakTypes.add(Padding(
+    padding: const EdgeInsets.only(bottom: 8.0),
+    child:
+        Text("Weaknesses", style: TextStyle(color: Colors.white, fontSize: 20)),
+  ));
+
+  for (int i = 0; i < p.resistant.length; i++) {
+    resistantTypes.add(_buildTypeCard(p.resistant[i]));
+  }
+
+  for (int i = 0; i < p.weaknesses.length; i++) {
+    weakTypes.add(_buildTypeCard(p.weaknesses[i]));
+  }
+
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: IntrinsicHeight(
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Card(
+              color: Colors.green[400],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(children: resistantTypes),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Card(
+              color: Colors.red[400],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(children: weakTypes),
+              ),
+            ),
+          )
+        ],
+      ),
+    ),
+  );
+}
+
+_buildTypeCard(type) {
+  return Card(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15.0),
+          bottomLeft: Radius.circular(15.0),
+          topRight: Radius.circular(15.0),
+          bottomRight: Radius.circular(15.0)),
+    ),
+    child: Container(
+      width: 100,
+      height: 30,
+      child: Center(
+        child: Text(type,
+            style: TextStyle(
+                color: Colors.white,
+                shadows: <Shadow>[Shadow(blurRadius: 2.0)])),
+      ),
+    ),
+    color: typeColorMap[type],
+  );
 }
