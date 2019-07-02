@@ -10,3 +10,6 @@
 ## Notes
 * :apple: Not tested on iOS 
 * :memo: In need of some refactoring
+
+### Demo
+![](pokedex-flutter-demo.gif)
