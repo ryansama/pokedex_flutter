@@ -8,5 +8,5 @@
 </p>
 
 ## Notes
-:apple: Not tested on iOS 
-:memo: In need of some refactoring :memo:
+* :apple: Not tested on iOS 
+* :memo: In need of some refactoring
