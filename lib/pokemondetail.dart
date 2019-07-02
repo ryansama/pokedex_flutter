@@ -59,7 +59,15 @@ class _PokemonDetailState extends State<PokemonDetail> {
             child: CustomScrollView(
               slivers: <Widget>[
                 _buildSliverAppBar(p),
-                SliverFillRemaining(child: _buildDetailCards(p))
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    _buildBasicInfoRow(p),
+                    _buildTypesRow(p),
+                    _buildEvolutionRow(p),
+                    _buildStrongWeakRow(p),
+                    _buildMovesRow(p)
+                  ]),
+                )
               ],
             ),
           ),
@@ -123,23 +131,6 @@ class _PokemonDetailState extends State<PokemonDetail> {
       .replaceAll(".", "-")
       .replaceAll(" ", "")
       .toLowerCase();
-
-  _buildDetailCards(Pokemon p) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            _buildBasicInfoRow(p),
-            _buildTypesRow(p),
-            _buildEvolutionRow(p),
-            _buildStrongWeakRow(p),
-            _buildMovesRow(p)
-          ],
-        ),
-      ),
-    );
-  }
 
   Padding _buildEvolutionRow(Pokemon p) {
     final TextTheme textTheme = Theme.of(context).textTheme;
@@ -505,6 +496,7 @@ class _PokemonDetailState extends State<PokemonDetail> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6.0),
       child: Card(
+        elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15.0),
