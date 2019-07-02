@@ -12,4 +12,4 @@
 * :memo: In need of some refactoring
 
 ### Demo
-![](pokedex-flutter-demo.gif)
+![](https://media.giphy.com/media/W0KWCms0Uw08oxLPxV/giphy.gif)
