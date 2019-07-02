@@ -6,3 +6,7 @@
 <p align="center">
   Flutter app that leverages a <a href="https://github.com/ryansama/graphql-pokemon">Pokémon Graph</a>.
 </p>
+
+## Notes
+:apple: Not tested on iOS 
+:memo: In need of some refactoring :memo:
