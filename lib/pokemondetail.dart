@@ -444,18 +444,20 @@ class _PokemonDetailState extends State<PokemonDetail> {
     ));
 
     for (var fm in fastMoves) {
-      var moveRow = new List<Widget>();
+      if (fm.name != null) {
+        var moveRow = new List<Widget>();
 
-      moveRow.add(Padding(
-        padding: const EdgeInsets.only(left: 8.0, bottom: 6.0, right: 6.0),
-        child: Text(fm.name, style: textTheme.body2),
-      ));
+          moveRow.add(Padding(
+            padding: const EdgeInsets.only(left: 8.0, bottom: 6.0, right: 6.0),
+            child: Text(fm.name, style: textTheme.body2),
+          ));
 
-      var numPills = fm.damage / 10;
-      for (int i = 0; i < numPills; i++) {
-        moveRow.add(_buildAttackPowerPill(fm));
+        var numPills = fm.damage / 10;
+        for (int i = 0; i < numPills; i++) {
+          moveRow.add(_buildAttackPowerPill(fm));
+        }
+        moveRows.add(Row(children: moveRow));
       }
-      moveRows.add(Row(children: moveRow));
     }
 
     for (var sm in specialMoves) {
